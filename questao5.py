@@ -5,7 +5,7 @@ def teams(candidates, k):
 
     array = [*candidates]
     combinacoes = []
-    for c in array:
+    for c in candidates:
         array.remove(c) 
         combinacoes.extend([ [c, *x] for x in teams(array, k-1)])
 
@@ -28,7 +28,7 @@ def test(n_candidatos, k):
 
     result = teams(candidatos, k)
     for i in range(len(result)):
-        print( f"   Opção {i}:    {''.join(result[i]).strip().strip(",")}.")
+        print( f"   Opção {i+1}:\t{''.join(result[i]).strip().strip(",")}.")
     print("_________________________________")
 
 
