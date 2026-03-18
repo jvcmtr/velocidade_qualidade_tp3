@@ -4,7 +4,8 @@ from questao4_styles import *
 
 IGNORE_PREFIX = [".", "__"]
 
-def print_dir(path, depth=0, max_depth=None, show_full_dirname=False, style=DEFAULT_STYLE):
+def print_dir(path, depth=0, max_depth=10, show_full_dirname=False, style=DEFAULT_STYLE):
+    
     # Definições de estilização
     spacer = (
         style.get("spacer_prefix")+
@@ -19,30 +20,32 @@ def print_dir(path, depth=0, max_depth=None, show_full_dirname=False, style=DEFA
             print_styled(style.get("dir_prefix") + str + style.get("dir_sufix"))
         else:
             print(spacer + str)
-
-    # Logica central da função
+    
+    # Limite de recursão
     if max_depth and depth > max_depth:
         return
 
+    # Ordem alfabetica
     itens = os.listdir(path) 
-    itens.sort() # Ordem alfabetica
+    itens.sort() 
+    
     for item in itens:
         item_path = os.path.join(path, item)
         
-        if any(item.startswith(p) for p in IGNORE_PREFIX): # Ignore arquivos escondidos
+        # Ignor arquivos escondidos
+        if any(item.startswith(p) for p in IGNORE_PREFIX): 
             continue
 
         if not os.path.isdir(item_path):
             print_styled(item, is_file=True)
-        else:        
-            print_styled(item, is_dir=True)
-            print_dir(
-                item_path, 
-                depth=depth+1, 
-                max_depth=max_depth, 
-                show_full_dirname=show_full_dirname,
-                style=style
-            )
+
+        else:
+            if show_full_dirname:
+                print_styled(item_path, is_dir=True)
+            else:
+                print_styled(item, is_dir=True)
+
+            print_dir(item_path, depth+1, max_depth, show_full_dirname, style)
 
     if(style.get("end_dir")):
         print_styled(style.get("end_dir"))
