@@ -47,12 +47,12 @@ def print_dir(path, depth=0, max_depth=10, show_full_dirname=False, style=DEFAUL
 
             print_dir(item_path, depth+1, max_depth, show_full_dirname, style)
 
-    if(style.get("end_dir")):
+    if(style.get("end_dir") and len(itens)>0):
         print_styled(style.get("end_dir"))
 
 if __name__ == "__main__":
     current_path = os.getcwd()
-    depth = 2
+    depth = 10
     if len(sys.argv) > 1:
         current_path = current_path = os.path.abspath(sys.argv[1])
     if len(sys.argv) > 2:
